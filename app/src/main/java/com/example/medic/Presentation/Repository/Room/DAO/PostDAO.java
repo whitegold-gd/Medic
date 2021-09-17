@@ -1,11 +1,11 @@
-package com.example.medic.Data.DAO.Room;
+package com.example.medic.Presentation.Repository.Room.DAO;
 
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.lifecycle.LiveData;
 
-import com.example.medic.Data.DTO.PostDTO;
+import com.example.medic.Presentation.Repository.Room.DTO.PostDTO;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public interface PostDAO {
     void deletePost(PostDTO post);
 
     @Query("SELECT * FROM post")
-    LiveData<List<PostDAO>> getAllPosts();
+    LiveData<List<PostDTO>> getAllPosts();
 }

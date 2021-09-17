@@ -1,16 +1,16 @@
-package com.example.medic.Data.DTO;
+package com.example.medic.Presentation.Repository.Room.DTO;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.medic.Domain.Model.Post;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Entity(tableName = "post")
 public class PostDTO extends Post {

@@ -7,7 +7,7 @@ public class Post {
     private String body;
     private String tags;
     private String nameOfAuthor;
-    private String date;
+    private LocalDateTime date;
 
     public Post(){
     }
@@ -35,7 +35,7 @@ public class Post {
         this.nameOfAuthor = nameOfAuthor;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
