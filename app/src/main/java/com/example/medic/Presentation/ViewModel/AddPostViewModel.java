@@ -20,6 +20,7 @@ public class AddPostViewModel extends ViewModel {
         postDTO.setBody(body);
         postDTO.setTags(tags);
         postDTO.setDate(localDateTime);
+        postDTO.setNameOfAuthor("Никита Остапенко");
 
         Repository.getInstance().addPost(postDTO);
     }
