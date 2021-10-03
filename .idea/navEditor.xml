@@ -20,18 +20,35 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="postFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="232" />
+                            <option name="y" value="314" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="postList">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-56" />
-                            <option name="y" value="34" />
+                            <option name="x" value="-82" />
+                            <option name="y" value="151" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_postList_to_addPost">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_postList_to_postFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

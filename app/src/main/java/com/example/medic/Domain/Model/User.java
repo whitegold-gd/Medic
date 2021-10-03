@@ -5,10 +5,9 @@ public class User {
     private String lastName;
     private String email;
 
-    public User(String name, String lastName, String email) {
+    public User(String name, String lastName) {
         this.name = name;
         this.lastName = lastName;
-        this.email = email;
     }
 
     public String getName() {

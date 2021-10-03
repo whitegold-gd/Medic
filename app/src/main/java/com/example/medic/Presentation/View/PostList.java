@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medic.Domain.Model.Post;
+import com.example.medic.MainActivity;
 import com.example.medic.Presentation.View.Adapters.PostListAdapter;
 import com.example.medic.Presentation.ViewModel.PostListViewModel;
 import com.example.medic.R;
@@ -35,7 +36,7 @@ public class PostList extends Fragment {
         postListViewModel = new ViewModelProvider(this).get(PostListViewModel.class);
 
         postListViewModel.getPostList().observe(getViewLifecycleOwner(), (List<Post> postList) -> {
-            recyclerView.setAdapter(new PostListAdapter(postList));
+            recyclerView.setAdapter(new PostListAdapter(postList, (MainActivity) requireActivity()));
         });
 
         postListView.findViewById(R.id.buttonPanel).setOnClickListener(new View.OnClickListener() {

@@ -1,24 +1,29 @@
 package com.example.medic.Domain.Model;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import kotlin.collections.ArrayDeque;
 
 public class Post {
+    @NotNull
+    private String id;
     private String title;
     private String body;
     private String tags;
-    private String nameOfAuthor;
+    private User user;
     private LocalDateTime date;
-
+    private List<String> images;
     public Post(){
+        id = UUID.randomUUID().toString();
+        images = new ArrayList<>();
     }
-
-    public Post(String title, String body, String tags, String nameOfAuthor){
-        this.title = title;
-        this.body = body;
-        this.tags = tags;
-        this.nameOfAuthor = nameOfAuthor;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -31,12 +36,20 @@ public class Post {
         this.tags = tags;
     }
 
-    public void setNameOfAuthor(String nameOfAuthor) {
-        this.nameOfAuthor = nameOfAuthor;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public void setId(@NotNull String id) {
+        this.id = id;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public String getTitle() {
@@ -51,12 +64,20 @@ public class Post {
         return tags;
     }
 
-    public String getNameOfAuthor() {
-        return nameOfAuthor;
+    public User getUser() {
+        return user;
     }
 
     public LocalDateTime getDate() {
         return date;
     }
 
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
 }
