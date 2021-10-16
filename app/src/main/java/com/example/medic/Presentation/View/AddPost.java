@@ -1,20 +1,15 @@
 package com.example.medic.Presentation.View;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
@@ -22,26 +17,21 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.medic.MainActivity;
 import com.example.medic.Presentation.View.Adapters.ImageSliderAdapter;
 import com.example.medic.Presentation.ViewModel.AddPostViewModel;
-import com.example.medic.Presentation.ViewModel.PostListViewModel;
-import com.example.medic.R;
 import com.example.medic.databinding.AddPostFragmentBinding;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class AddPost extends Fragment {
+    int operationChecker = 0;
 
-    TextView title;
-    TextView body;
-    TextView tags;
+    String correctTitle;
+    String correctBody;
+    String correctTags;
 
     List<String> images = new ArrayList<>();
 
     AddPostViewModel addPostViewModel;
-
     AddPostFragmentBinding mBinding;
 
     public static AddPost newInstance(){
@@ -69,20 +59,70 @@ public class AddPost extends Fragment {
         mBinding.buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title = mBinding.title;
-                body = mBinding.body;
-                tags = mBinding.tags;
-
-                if (title.getText().length() == 0 || body.getText().length() == 0 || tags.getText().length() == 0) {
+                if (mBinding.title.getText().length() == 0 || mBinding.body.getText().length() == 0 || mBinding.tags.getText().length() == 0) {
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_LONG).show();
                 } else {
-                    addPostViewModel.addPost(
-                            title.getText().toString(),
-                            body.getText().toString(),
-                            tags.getText().toString(),
-                            images
-                    );
-                    Navigation.findNavController(v).popBackStack();
+                    operationChecker = 0;
+                    addPostViewModel.getCorrectedText(mBinding.title.getText().toString())
+                            .observe(getViewLifecycleOwner(), new Observer<String>() {
+                                @Override
+                                public void onChanged(String s) {
+                                    if (operationChecker == 2){
+                                        correctTitle = s;
+                                        addPostViewModel.addPost(
+                                                correctTitle,
+                                                correctBody,
+                                                correctTags,
+                                                images
+                                        );
+                                        operationChecker = 0;
+                                        Navigation.findNavController(v).popBackStack();
+                                    } else {
+                                        correctTitle = s;
+                                        operationChecker++;
+                                    }
+                                }
+                            });
+                    addPostViewModel.getCorrectedText(mBinding.body.getText().toString())
+                            .observe(getViewLifecycleOwner(), new Observer<String>() {
+                                @Override
+                                public void onChanged(String s) {
+                                    if (operationChecker == 2){
+                                        correctBody = s;
+                                        addPostViewModel.addPost(
+                                                correctTitle,
+                                                correctBody,
+                                                correctTags,
+                                                images
+                                        );
+                                        operationChecker = 0;
+                                        Navigation.findNavController(v).popBackStack();
+                                    } else {
+                                        correctBody = s;
+                                        operationChecker++;
+                                    }
+                                }
+                            });
+                    addPostViewModel.getCorrectedText(mBinding.tags.getText().toString())
+                            .observe(getViewLifecycleOwner(), new Observer<String>() {
+                                @Override
+                                public void onChanged(String s) {
+                                    if (operationChecker == 2){
+                                        correctTags = s;
+                                        addPostViewModel.addPost(
+                                                correctTitle,
+                                                correctBody,
+                                                correctTags,
+                                                images
+                                        );
+                                        operationChecker = 0;
+                                        Navigation.findNavController(v).popBackStack();
+                                    } else {
+                                        correctTags = s;
+                                        operationChecker++;
+                                    }
+                                }
+                            });
                 }
             }
         });

@@ -3,6 +3,7 @@ package com.example.medic.DI;
 import android.app.Application;
 
 import com.example.medic.Presentation.Repository.Mock.MockBase;
+import com.example.medic.Presentation.Repository.Network.ProfanityLofic.ProfanityChecker;
 import com.example.medic.Presentation.Repository.PostRepository;
 import com.example.medic.Presentation.Repository.RepositoryTasks;
 import com.google.gson.Gson;
@@ -23,6 +24,7 @@ public class ServiceLocator {
 
     private ServiceLocator(){};
     private RepositoryTasks repositoryTasks;
+    private ProfanityChecker profanityChecker;
 
     static public ServiceLocator getInstance(){
         if (instance == null){
@@ -45,9 +47,15 @@ public class ServiceLocator {
         return repositoryTasks;
     }
 
+    public ProfanityChecker getProfanityChecker(){
+        if (profanityChecker == null){
+            profanityChecker = new ProfanityChecker();
+        }
+        return profanityChecker;
+    }
+
     private Gson gson;
 
-    //TODO:
     public Gson getGson() {
         if (gson == null) {
             gson = new GsonBuilder()
