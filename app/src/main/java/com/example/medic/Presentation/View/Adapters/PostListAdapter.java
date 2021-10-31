@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,18 +61,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
         holder.binding.tags.setText(localDataSet.get(position).getTags());
 
-        holder.binding.nameOfAuthor.setText(localDataSet.get(position).getUser().getLastName() + " " +
-                localDataSet.get(position).getUser().getName());
+        holder.binding.nameOfAuthor.setText(localDataSet.get(position).getUser().getFirstName());
 
         if (localDataSet.get(position).getImages() != null && !localDataSet.get(position).getImages().isEmpty()){
-            Log.i("TAG4", "Hello");
             holder.binding.imageSlider
                     .setVisibility(View.VISIBLE);
             holder.binding.imageSlider.setAdapter(new ImageSliderAdapter(localDataSet.get(position).getImages(),
                     false,
                     mainActivity));
         } else {
-            Log.i("TAG5", "Hello");
             holder.binding.imageSlider
                     .setVisibility(View.GONE);
         }

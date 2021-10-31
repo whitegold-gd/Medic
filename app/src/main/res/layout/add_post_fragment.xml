@@ -17,7 +17,7 @@
             <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="86dp"
 
                 android:hint="Коротко опишите тему"
                 android:textSize="15sp" />
@@ -60,7 +60,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:background="#8BFF4E"
+                    android:background="@color/black"
                     android:scaleType="center"
                     app:srcCompat="@android:drawable/arrow_down_float" />
             </RelativeLayout>
@@ -81,10 +81,10 @@
             android:layout_gravity="end"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#8BFF4E"
+            android:backgroundTint="@color/black"
             android:backgroundTintMode="add"
             android:padding="10dp"
-            android:src="?attr/actionModeCloseDrawable"
+            android:src="@drawable/ic_baseline_arrow_back_24"
             app:backgroundTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#8BFF4E"
+            android:backgroundTint="@color/black"
             android:backgroundTintMode="add"
             android:padding="10dp"
             android:src="@android:drawable/ic_input_add"

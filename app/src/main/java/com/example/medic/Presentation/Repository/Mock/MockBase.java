@@ -1,13 +1,13 @@
 package com.example.medic.Presentation.Repository.Mock;
 
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.example.medic.Domain.Model.Post;
 import com.example.medic.Domain.Model.User;
 import com.example.medic.Presentation.Repository.RepositoryTasks;
-import com.example.medic.Domain.Model.Post;
-import com.example.medic.Presentation.Repository.Room.DTO.PostDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -92,6 +92,31 @@ public class MockBase implements RepositoryTasks {
         posts.add(post);
 
         data.setValue(posts);
+    }
+
+    @Override
+    public void deletePost(Post post) {
+
+    }
+
+    @Override
+    public <T extends User> LiveData<T> findUser(String email, LifecycleOwner owner) {
+        return null;
+    }
+
+    @Override
+    public <T extends User> LiveData<T> findUser(String email, String password, LifecycleOwner owner) {
+        return null;
+    }
+
+    @Override
+    public void addUser(User user) {
+
+    }
+
+    @Override
+    public void updateUser(User user) {
+
     }
 
     @Override

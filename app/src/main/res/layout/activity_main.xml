@@ -20,4 +20,11 @@
 
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.Medic"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,17 +2,18 @@ package com.example.medic.Presentation.View;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.Navigation;
 
 import com.example.medic.DI.ServiceLocator;
 import com.example.medic.Domain.Model.Post;
@@ -20,15 +21,15 @@ import com.example.medic.MainActivity;
 import com.example.medic.Presentation.View.Adapters.ImageSliderAdapter;
 import com.example.medic.Presentation.ViewModel.PostViewModel;
 import com.example.medic.R;
-import com.example.medic.databinding.AddPostFragmentBinding;
 import com.example.medic.databinding.PostFragmentBinding;
-
-import java.time.format.DateTimeFormatter;
 
 public class PostFragment extends Fragment {
 
     private PostViewModel mViewModel;
     private PostFragmentBinding mBinding;
+    private Boolean deleteButtonBoolean;
+
+    private Post currentPost;
 
     public static PostFragment newInstance() {
         return new PostFragment();
@@ -42,9 +43,9 @@ public class PostFragment extends Fragment {
             mViewModel = new ViewModelProvider(this).get(PostViewModel.class);
 
         if (getArguments() != null) {
-            mViewModel.setPost(
-                    ServiceLocator.getInstance().getGson().fromJson(getArguments().getString("Post"), Post.class)
-            );
+            currentPost = ServiceLocator.getInstance().getGson()
+                    .fromJson(getArguments().getString("Post"), Post.class);
+            mViewModel.setPost(currentPost);
         }
     }
 
@@ -53,18 +54,30 @@ public class PostFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mBinding = PostFragmentBinding.inflate(getLayoutInflater(), container, false);
 
+        setHasOptionsMenu(true);
+
+        deleteButtonBoolean = false;
+
+        switch (ServiceLocator.getInstance().getUser().getRole()) {
+            case Administrator:
+                deleteButtonBoolean = true;
+                sendIntentLogic();
+                break;
+            case Moderator:
+                deleteButtonBoolean = true;
+                mBinding.fab.setVisibility(View.GONE);
+                break;
+            case User:
+                deleteButtonBoolean = false;
+                mBinding.fab.setVisibility(View.VISIBLE);
+                sendIntentLogic();
+            case Guest:
+                mBinding.fab.setVisibility(View.GONE);
+                deleteButtonBoolean = false;
+                break;
+        }
+
         if (mViewModel.getPost() != null) {
-            mBinding.fab.setOnClickListener((View v) -> {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT,
-                        "https://rf.medic_post/" + mViewModel.getPost().getId());
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-            });
-
             mBinding.imageSlider.setAdapter(new ImageSliderAdapter(mViewModel.getPost().getImages(),
                     false, ((MainActivity) requireActivity())));
             mBinding.postTitle.setText(mViewModel.getPost().getTitle());
@@ -75,4 +88,37 @@ public class PostFragment extends Fragment {
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.post_fragment, menu);
+        MenuItem item = menu.findItem(R.id.miDelete);
+        item.setVisible(deleteButtonBoolean);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.miDelete: {
+                mViewModel.deletePost(currentPost);
+                Navigation.findNavController(((MainActivity) getActivity()).mBinding.navHostFragment)
+                        .popBackStack();
+                break;
+            }
+        }
+        return true;
+    }
+
+    public void sendIntentLogic(){
+        mBinding.fab.setOnClickListener((View v) -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    "https://rf.medic_post/" + mViewModel.getPost().getId());
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        });
+    }
 }

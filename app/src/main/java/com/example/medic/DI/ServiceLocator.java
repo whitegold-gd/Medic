@@ -2,7 +2,9 @@ package com.example.medic.DI;
 
 import android.app.Application;
 
+import com.example.medic.Domain.Model.User;
 import com.example.medic.Presentation.Repository.Mock.MockBase;
+import com.example.medic.Presentation.Repository.Network.Google.GoogleLogic;
 import com.example.medic.Presentation.Repository.Network.ProfanityLofic.ProfanityChecker;
 import com.example.medic.Presentation.Repository.PostRepository;
 import com.example.medic.Presentation.Repository.RepositoryTasks;
@@ -25,6 +27,10 @@ public class ServiceLocator {
     private ServiceLocator(){};
     private RepositoryTasks repositoryTasks;
     private ProfanityChecker profanityChecker;
+
+    private User user;
+
+    private GoogleLogic googleLogic;
 
     static public ServiceLocator getInstance(){
         if (instance == null){
@@ -78,5 +84,20 @@ public class ServiceLocator {
                     .create();
         }
         return gson;
+    }
+
+    public GoogleLogic getGoogleLogic(){
+        if (googleLogic == null) {
+            googleLogic = new GoogleLogic();
+        }
+        return googleLogic;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

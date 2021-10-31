@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.medic.DI.ServiceLocator;
 import com.example.medic.Domain.Model.Operations.PostOperations;
 import com.example.medic.Domain.Model.Post;
-import com.example.medic.Domain.Model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +19,7 @@ public class AddPostViewModel extends ViewModel {
         Post post = PostOperations.addPost(title,
                 body,
                 localDateTime,
-                new User("Никита", "Остапенко"),
+                ServiceLocator.getInstance().getUser(),
                 tags,
                 images.stream().filter(Objects::nonNull).collect(Collectors.toList()));
 

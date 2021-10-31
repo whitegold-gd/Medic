@@ -2,8 +2,6 @@ package com.example.medic;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -11,10 +9,12 @@ import androidx.navigation.Navigation;
 
 import com.example.medic.DI.ServiceLocator;
 import com.example.medic.Domain.Model.Post;
+import com.example.medic.Domain.Model.User;
 import com.example.medic.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     public ActivityMainBinding mBinding;
 
     @Override
@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mBinding.getRoot());
 
         ServiceLocator.getInstance().init(getApplication());
+
+        ServiceLocator.getInstance().getGoogleLogic().auth.init(this);
 
         Uri income = getIntent().getData();
         if (income != null){
@@ -41,6 +43,16 @@ public class MainActivity extends AppCompatActivity {
                     );
                 }
             });
+        }
+
+        setupUser();
+    }
+
+    public void setupUser(){
+        User user = new User();
+        user.setRole(User.Role.Guest);
+        if (ServiceLocator.getInstance().getUser() == null){
+            ServiceLocator.getInstance().setUser(user);
         }
     }
 }

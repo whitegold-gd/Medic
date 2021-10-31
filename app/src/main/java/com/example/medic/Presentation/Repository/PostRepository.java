@@ -7,20 +7,25 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.example.medic.Presentation.Repository.Room.DAO.PostDAO;
-import com.example.medic.Presentation.Repository.Room.DTO.PostDTO;
 import com.example.medic.Domain.Model.Post;
+import com.example.medic.Domain.Model.User;
+import com.example.medic.Presentation.Repository.Room.DAO.PostDAO;
+import com.example.medic.Presentation.Repository.Room.DAO.UserDAO;
+import com.example.medic.Presentation.Repository.Room.DTO.PostDTO;
+import com.example.medic.Presentation.Repository.Room.DTO.UserDTO;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public class PostRepository implements RepositoryTasks {
     private PostDAO postDAO;
+    private UserDAO userDAO;
     private LiveData<List<PostDTO>> posts;
 
     public PostRepository(Application application){
         PostRoomDatabase database = PostRoomDatabase.getDatabase(application);
         postDAO = database.postDAO();
+        userDAO = database.userDAO();
         posts = postDAO.getAllPosts();
     }
 
@@ -35,6 +40,15 @@ public class PostRepository implements RepositoryTasks {
 
         PostRoomDatabase.databaseWriteExecutor.execute(() -> {
             postDAO.addPost(dto);
+        });
+    }
+
+    @Override
+    public void deletePost(Post post) {
+        PostDTO dto = PostDTO.convertFromPost(post);
+
+        PostRoomDatabase.databaseWriteExecutor.execute(() -> {
+            postDAO.deletePost(dto);
         });
     }
 
@@ -57,5 +71,51 @@ public class PostRepository implements RepositoryTasks {
             }
         });
         return specificPost;
+    }
+
+    @Override
+    public LiveData<UserDTO> findUser(String email, LifecycleOwner owner) {
+        MutableLiveData<UserDTO> answer = new MutableLiveData<>();
+        userDAO.getUserByEmail(email).observe(owner, new Observer<UserDTO>() {
+            @Override
+            public void onChanged(UserDTO userDTO) {
+                answer.setValue(userDTO);
+            }
+        });
+        return answer;
+    }
+
+    @Override
+    public LiveData<UserDTO> findUser(String email, String password, LifecycleOwner owner) {
+        MutableLiveData<UserDTO> answer = new MutableLiveData<>();
+        userDAO.getUserByEmailAndPassword(email, password).observe(owner, new Observer<UserDTO>() {
+            @Override
+            public void onChanged(UserDTO userDTO) {
+                answer.setValue(userDTO);
+            }
+        });
+        return answer;
+    }
+
+    @Override
+    public void addUser(User user) {
+        UserDTO dto = UserDTO.convertFromUser(user);
+        PostRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                userDAO.addUser(dto);
+            }
+        });
+    }
+
+    @Override
+    public void updateUser(User user) {
+        UserDTO dto = UserDTO.convertFromUser(user);
+        PostRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                userDAO.updateUserInfo(dto);
+            }
+        });
     }
 }

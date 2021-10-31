@@ -1,17 +1,42 @@
 package com.example.medic.Domain.Model;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
+
 public class User {
-    private String name;
+    @NotNull
+    private String id;
+    private String firstName;
     private String lastName;
     private String email;
+    private String password;
+    private Role role;
+
+    public enum Role {
+        Administrator,
+        Moderator,
+        User,
+        Guest
+    }
+
+    public User(){
+        id = UUID.randomUUID().toString();
+    }
 
     public User(String name, String lastName) {
-        this.name = name;
+        this();
+        this.firstName = name;
         this.lastName = lastName;
     }
 
-    public String getName() {
-        return name;
+    @NotNull
+    public String getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getLastName() {
@@ -22,8 +47,16 @@ public class User {
         return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getPassword() {
+        return password;
+
+    }
+    public void setId(@NotNull String id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public void setLastName(String lastName) {
@@ -34,4 +67,15 @@ public class User {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
