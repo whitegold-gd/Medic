@@ -2,6 +2,7 @@ package com.example.medic.Presentation.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,6 +59,8 @@ public class PostFragment extends Fragment {
 
         deleteButtonBoolean = false;
 
+        Log.w("TAG123", ServiceLocator.getInstance().getUser().getRole().toString());
+
         switch (ServiceLocator.getInstance().getUser().getRole()) {
             case Administrator:
                 deleteButtonBoolean = true;
@@ -71,6 +74,7 @@ public class PostFragment extends Fragment {
                 deleteButtonBoolean = false;
                 mBinding.fab.setVisibility(View.VISIBLE);
                 sendIntentLogic();
+                break;
             case Guest:
                 mBinding.fab.setVisibility(View.GONE);
                 deleteButtonBoolean = false;

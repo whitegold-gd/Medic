@@ -48,12 +48,14 @@ public class GoogleAuth {
                         newUser.setFirstName(personName);
                     }
                     newUser.setRole(User.Role.User);
+                    Log.w("ABCHIHBA", personEmail);
 
                     ServiceLocator.getInstance().getRepository().addUser(newUser);
 
                     ServiceLocator.getInstance().setUser(newUser);
                 } else {
                     ServiceLocator.getInstance().setUser(user);
+                    Log.w("ABCHIHBA", "already exist");
                 }
             });
         }

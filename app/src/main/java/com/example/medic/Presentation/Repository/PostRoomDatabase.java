@@ -41,6 +41,7 @@ public abstract class PostRoomDatabase extends RoomDatabase {
                                             UserDTO admin = new UserDTO();
                                             admin.setEmail("bonnie.terebko@gmail.com");
                                             admin.setPassword("admin");
+                                            admin.setFirstName("admin");
                                             admin.setRole(User.Role.Administrator);
 
                                             getDatabase(context).userDAO().addUser(admin);
@@ -48,6 +49,7 @@ public abstract class PostRoomDatabase extends RoomDatabase {
                                             UserDTO moder = new UserDTO();
                                             moder.setEmail("taleforhelen@gmail.com");
                                             moder.setPassword("moder");
+                                            moder.setFirstName("moder");
                                             moder.setRole(User.Role.Moderator);
 
                                             getDatabase(context).userDAO().addUser(moder);
