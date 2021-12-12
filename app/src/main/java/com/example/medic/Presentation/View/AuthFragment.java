@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -40,26 +42,21 @@ public class AuthFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = AuthFragmentBinding.inflate(getLayoutInflater(), container, false);
 
-        binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
+        binding.registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register(binding.editTextTextEmailAddress.getText().toString(),
+                        binding.editTextTextPassword.getText().toString());
+            }
+        });
 
-        if (ServiceLocator.getInstance().getUser().getRole() != User.Role.Guest)
-            binding.signInButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    auth(binding.editTextTextEmailAddress.getText().toString(),
-                            binding.editTextTextPassword.getText().toString());
-                    Navigation.findNavController(v).navigate(R.id.action_postList_to_authFragment);
-                }
-            });
-        else
-            binding.signInButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    register(binding.editTextTextEmailAddress.getText().toString(),
-                            binding.editTextTextPassword.getText().toString());
-                    Navigation.findNavController(v).navigate(R.id.action_postList_to_authFragment);
-                }
-            });
+        binding.signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth(binding.editTextTextEmailAddress.getText().toString(),
+                        binding.editTextTextPassword.getText().toString());
+            }
+        });
 
         setHasOptionsMenu(true);
 
@@ -78,17 +75,13 @@ public class AuthFragment extends Fragment {
 
     public void auth(String email, String password){
         if (email.length() != 0 && password.length() != 0){
-            mViewModel.auth(email, password);
+            mViewModel.auth(email, password, getActivity());
         }
-        ServiceLocator.getInstance().getRepository().findUser(email, getActivity())
-                .observe(getActivity(), (user) -> {
-                    ServiceLocator.getInstance().setUser(user);
-                });
     }
 
     public void register(String email, String password){
         if (email.length() != 0 && password.length() != 0){
-            mViewModel.register(email, password);
+            mViewModel.register(email, password, getActivity());
         }
     }
 }

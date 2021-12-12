@@ -31,7 +31,7 @@ public interface MedicServerAPI {
 
     @GET("/user/byEmail")
     @Headers({"Accept: application/json"})
-    Call<User> getInfoByEmail(@Header("Authorization") String token, @Query("email") String email);
+    Call<User> getInfoByEmail(@Query("email") String email);
 
     @GET("/post/all")
     @Headers({"Accept: application/json"})
@@ -39,11 +39,11 @@ public interface MedicServerAPI {
 
     @POST("/post/add")
     @Headers({"Accept: application/json"})
-    Call<Post> addNewPostToList(@Header("Authorization") String token, @Query("post") Post post);
+    Call<Post> addNewPostToList(@Header("Authorization") String token, @Body Post post);
 
-    @DELETE("/post/delete")
+    @GET("/post/delete")
     @Headers({"Accept: application/json"})
-    Call<Void> deletePostById(@Header("Authorization") String token, @Query("id") UUID id);
+    Call<Boolean> deletePostById(@Header("Authorization") String token, @Query("id") String id);
 
     @GET("/post/byId")
     @Headers({"Accept: application/json"})

@@ -1,6 +1,7 @@
 package com.example.medic.Presentation.ViewModel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.medic.DI.ServiceLocator;
@@ -13,7 +14,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AddPostViewModel extends ViewModel {
-    public void addPost(String title, String body, String tags, List<String> images){
+    public LiveData<Post> addPost(String title, String body, String tags, List<String> images){
         String localDateTime = LocalDateTime.now().toString();
 
         Post post = PostOperations.addPost(title,
@@ -23,7 +24,7 @@ public class AddPostViewModel extends ViewModel {
                 tags,
                 images.stream().filter(Objects::nonNull).collect(Collectors.toList()));
 
-        ServiceLocator.getInstance().getRepository().addPost(post);
+        return ServiceLocator.getInstance().getRepository().addPost(post);
     }
 
     public LiveData<String> getCorrectedText(String untreatedText){

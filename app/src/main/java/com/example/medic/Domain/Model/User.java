@@ -26,8 +26,11 @@ public class User {
 
     public User(String email, String password) {
         this();
+        this.firstName = "Anon";
+        this.lastName = "Anon";
         this.email = email;
         this.password = password;
+        this.role = Role.User;
     }
 
     @NotNull

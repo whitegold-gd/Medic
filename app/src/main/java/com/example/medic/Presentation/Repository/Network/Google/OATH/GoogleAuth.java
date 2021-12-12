@@ -3,12 +3,14 @@ package com.example.medic.Presentation.Repository.Network.Google.OATH;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
 import com.example.medic.DI.ServiceLocator;
 import com.example.medic.Domain.Model.User;
 import com.example.medic.MainActivity;
+import com.example.medic.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,26 +36,9 @@ public class GoogleAuth {
     public void getLastAuthInfo(MainActivity activity){
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(activity);
         if (acct != null) {
-            String personName = acct.getDisplayName();
             String personEmail = acct.getEmail();
-            ServiceLocator.getInstance().getRepository().findUser(personEmail, activity)
-                    .observe(activity, (user) -> {
-                if (user == null) {
-                    User newUser = new User();
-                    newUser.setEmail(personEmail);
-                    newUser.setPassword("123");
-                    if (personName == null){
-                        newUser.setFirstName("anon");
-                    } else {
-                        newUser.setFirstName(personName);
-                    }
-                    newUser.setRole(User.Role.User);
-                    ServiceLocator.getInstance().getRepository().addUser(newUser);
-                    ServiceLocator.getInstance().setUser(newUser);
-                } else {
-                    ServiceLocator.getInstance().setUser(user);
-                }
-            });
+            System.out.println("EMAIL = " + personEmail);
+            ((EditText) activity.findViewById(R.id.editTextTextEmailAddress)).setText(personEmail);
         }
     }
 

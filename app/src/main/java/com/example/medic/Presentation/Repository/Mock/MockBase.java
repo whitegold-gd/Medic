@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.logging.Level;
 
 public class MockBase implements RepositoryTasks {
     MutableLiveData<List<Post>> data;
@@ -98,15 +99,16 @@ public class MockBase implements RepositoryTasks {
     }
 
     @Override
-    public void addPost(Post post){
+    public LiveData<Post> addPost(Post post){
         posts.add(post);
 
         data.setValue(posts);
+        return null;
     }
 
     @Override
-    public void deletePost(Post post) {
-
+    public LiveData<Boolean> deletePost(Post post) {
+        return null;
     }
 
     @Override

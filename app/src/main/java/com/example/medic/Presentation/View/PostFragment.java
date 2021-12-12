@@ -104,9 +104,7 @@ public class PostFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miDelete: {
-                mViewModel.deletePost(currentPost);
-                Navigation.findNavController(((MainActivity) getActivity()).mBinding.navHostFragment)
-                        .popBackStack();
+                mViewModel.deletePost(currentPost, getActivity());
                 break;
             }
         }

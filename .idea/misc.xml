@@ -10,10 +10,12 @@
         <entry key="..\:/Users/bonni/AndroidStudioProjects/Medic/app/src/main/res/layout/post_fragment.xml" value="0.128" />
         <entry key="..\:/Users/bonni/AndroidStudioProjects/Medic/app/src/main/res/layout/post_list_element.xml" value="0.176" />
         <entry key="..\:/Users/bonni/AndroidStudioProjects/Medic/app/src/main/res/layout/post_list_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/talef/Documents/Univer/3-1/VSYBD/nikita/Medic/app/src/main/res/layout/auth_fragment.xml" value="0.4" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="16" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

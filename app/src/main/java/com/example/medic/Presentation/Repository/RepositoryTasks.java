@@ -14,8 +14,8 @@ public interface RepositoryTasks {
     LiveData<String> register(User user);
 
     <T extends Post> LiveData<List<T>> getAllPosts();
-    void addPost(Post post);
-    void deletePost(Post post);
+    LiveData<Post> addPost(Post post);
+    LiveData<Boolean> deletePost(Post post);
     <T extends Post> MutableLiveData<T> findPost(String id, LifecycleOwner owner);
 
     <T extends User> LiveData<T> findUser(String email, LifecycleOwner owner);

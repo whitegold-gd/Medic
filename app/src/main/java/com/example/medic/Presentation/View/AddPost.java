@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.medic.Domain.Model.Post;
 import com.example.medic.MainActivity;
 import com.example.medic.Presentation.View.Adapters.ImageSliderAdapter;
 import com.example.medic.Presentation.ViewModel.AddPostViewModel;
@@ -74,9 +75,13 @@ public class AddPost extends Fragment {
                                                 correctBody,
                                                 correctTags,
                                                 images
-                                        );
+                                        ).observe(getActivity(), new Observer<Post>() {
+                                            @Override
+                                            public void onChanged(Post post) {
+                                                Navigation.findNavController(v).popBackStack();
+                                            }
+                                        });
                                         operationChecker = 0;
-                                        Navigation.findNavController(v).popBackStack();
                                     } else {
                                         correctTitle = s;
                                         operationChecker++;
@@ -94,9 +99,13 @@ public class AddPost extends Fragment {
                                                 correctBody,
                                                 correctTags,
                                                 images
-                                        );
+                                        ).observe(getActivity(), new Observer<Post>() {
+                                            @Override
+                                            public void onChanged(Post post) {
+                                                Navigation.findNavController(v).popBackStack();
+                                            }
+                                        });
                                         operationChecker = 0;
-                                        Navigation.findNavController(v).popBackStack();
                                     } else {
                                         correctBody = s;
                                         operationChecker++;
@@ -114,9 +123,13 @@ public class AddPost extends Fragment {
                                                 correctBody,
                                                 correctTags,
                                                 images
-                                        );
+                                        ).observe(getActivity(), new Observer<Post>() {
+                                            @Override
+                                            public void onChanged(Post post) {
+                                                Navigation.findNavController(v).popBackStack();
+                                            }
+                                        });
                                         operationChecker = 0;
-                                        Navigation.findNavController(v).popBackStack();
                                     } else {
                                         correctTags = s;
                                         operationChecker++;

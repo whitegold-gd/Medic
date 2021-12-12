@@ -1,5 +1,6 @@
 package com.example.medic.Presentation.View;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -53,7 +54,7 @@ public class PostList extends Fragment {
             recyclerView.setAdapter(new PostListAdapter(postList, (MainActivity) requireActivity()));
         });
 
-        if (userVerified) {
+        if (!ServiceLocator.getInstance().getUser().getRole().equals(User.Role.Guest)) {
             postListView.findViewById(R.id.buttonPanel).setVisibility(View.VISIBLE);
         } else {
             postListView.findViewById(R.id.buttonPanel).setVisibility(View.GONE);
@@ -73,7 +74,7 @@ public class PostList extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
         this.mainMenu = menu;
-        if (userVerified) mainMenu.findItem(R.id.miProfile)
+        if (ServiceLocator.getInstance().getUser().getRole() != User.Role.Guest) mainMenu.findItem(R.id.miProfile)
                 .setIcon(R.drawable.ic_baseline_assignment_return_24);
     }
 
@@ -82,6 +83,7 @@ public class PostList extends Fragment {
         switch (item.getItemId()) {
             case R.id.miProfile: {
                 if (ServiceLocator.getInstance().getUser().getRole() == User.Role.Guest){
+                    auth();
                     authWithLoginAndPassword();
                 } else {
                     signOut();
@@ -97,8 +99,8 @@ public class PostList extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (ServiceLocator.getInstance().getGoogleLogic().auth
                 .requestCodeCheck(requestCode, RC_SIGN_IN, data)){
-            mainMenu.findItem(R.id.miProfile).setIcon(R.drawable.ic_baseline_assignment_return_24);
-            postListView.findViewById(R.id.buttonPanel).setVisibility(View.VISIBLE);
+            /*mainMenu.findItem(R.id.miProfile).setIcon(R.drawable.ic_baseline_assignment_return_24);
+            postListView.findViewById(R.id.buttonPanel).setVisibility(View.VISIBLE);*/
             userVerified = true;
 
             ServiceLocator.getInstance().getGoogleLogic()
