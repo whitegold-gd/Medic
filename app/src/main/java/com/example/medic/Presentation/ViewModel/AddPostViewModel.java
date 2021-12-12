@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class AddPostViewModel extends ViewModel {
     public void addPost(String title, String body, String tags, List<String> images){
-        LocalDateTime localDateTime = LocalDateTime.now();
+        String localDateTime = LocalDateTime.now().toString();
 
         Post post = PostOperations.addPost(title,
                 body,

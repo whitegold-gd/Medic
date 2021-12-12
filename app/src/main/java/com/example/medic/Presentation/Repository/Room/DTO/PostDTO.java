@@ -1,19 +1,12 @@
 package com.example.medic.Presentation.Repository.Room.DTO;
 
-import android.util.Log;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.example.medic.Domain.Model.Post;
 import com.example.medic.Domain.Model.User;
 import com.google.gson.Gson;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity(tableName = "post", primaryKeys = {"id"}, ignoredColumns = {"title", "body", "tags", "user", "date", "images"})
@@ -44,9 +37,9 @@ public class PostDTO extends Post {
     }
 
     @Override
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
+        this.dateDTO = date;
         super.setDate(date);
-        this.dateDTO = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
     @Override
@@ -66,10 +59,10 @@ public class PostDTO extends Post {
     }
 
     @Override
-    public LocalDateTime getDate() {
+    public String getDate() {
         if (super.getDate() == null) {
             if (this.dateDTO != null) {
-                super.setDate(LocalDateTime.parse(this.dateDTO, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+                setDate(dateDTO);
             } else {
                 return null;
             }
@@ -141,7 +134,7 @@ public class PostDTO extends Post {
 
     public void setDateDTO(String dateDTO) {
         this.bodyDTO = bodyDTO;
-        super.setDate(LocalDateTime.parse(this.dateDTO, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+        super.setDate(dateDTO);
     }
 
     public void setImagesDTO(String imagesDTO) {

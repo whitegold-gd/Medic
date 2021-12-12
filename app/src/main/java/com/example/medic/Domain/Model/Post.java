@@ -4,12 +4,9 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import kotlin.collections.ArrayDeque;
 
 public class Post {
     @NotNull
@@ -18,7 +15,7 @@ public class Post {
     private String body;
     private String tags;
     private User user;
-    private LocalDateTime date;
+    private String date;
     private List<String> images;
     public Post(){
         id = UUID.randomUUID().toString();
@@ -40,7 +37,7 @@ public class Post {
         this.user = user;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -68,7 +65,7 @@ public class Post {
         return user;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 

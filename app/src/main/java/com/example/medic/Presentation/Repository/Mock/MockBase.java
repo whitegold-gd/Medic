@@ -39,7 +39,7 @@ public class MockBase implements RepositoryTasks {
                 "обеспечение нашей деятельности позволяет выполнять важные задания по " +
                 "разработке существенных финансовых и административных условий.");
         post1.setTags("Tags6, tags7, tags8, tags9");
-        post1.setDate(LocalDateTime.of(2002, 7, 25, 7,0,0));
+        post1.setDate(LocalDateTime.of(2002, 7, 25, 7,0,0).toString());
         posts.add(post1);
 
         Post post2 = new Post();
@@ -60,7 +60,7 @@ public class MockBase implements RepositoryTasks {
                 "обеспечение нашей деятельности позволяет выполнять важные задания по " +
                 "разработке существенных финансовых и административных условий.");
         post1.setTags("Tags1 tags2, tags3, tags4");
-        post2.setDate(LocalDateTime.of(2002, 7, 25, 8,0,0));
+        post2.setDate(LocalDateTime.of(2002, 7, 25, 8,0,0).toString());
         posts.add(post2);
 
         Post post3 = new Post();
@@ -81,10 +81,20 @@ public class MockBase implements RepositoryTasks {
                 "обеспечение нашей деятельности позволяет выполнять важные задания по " +
                 "разработке существенных финансовых и административных условий.");
         post3.setTags("Tags2, tags1, tags4, tags3");
-        post3.setDate(LocalDateTime.of(2002, 7, 25, 9,0,0));
+        post3.setDate(LocalDateTime.of(2002, 7, 25, 9,0,0).toString());
         posts.add(post3);
 
         data = new MutableLiveData<>(posts);
+    }
+
+    @Override
+    public LiveData<String> auth(User user) {
+        return null;
+    }
+
+    @Override
+    public LiveData<String> register(User user) {
+        return null;
     }
 
     @Override

@@ -12,6 +12,4 @@ public class PostListViewModel extends ViewModel {
     public LiveData<List<Post>> getPostList(){
         return ServiceLocator.getInstance().getRepository().getAllPosts();
     }
-
-    //delete
 }

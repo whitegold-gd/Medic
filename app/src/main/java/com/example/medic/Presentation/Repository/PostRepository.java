@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.medic.DI.ServiceLocator;
 import com.example.medic.Domain.Model.Post;
 import com.example.medic.Domain.Model.User;
 import com.example.medic.Presentation.Repository.Network.MedicServer.MedicServerAPI;
@@ -13,6 +14,8 @@ import com.example.medic.Presentation.Repository.Room.DAO.PostDAO;
 import com.example.medic.Presentation.Repository.Room.DAO.UserDAO;
 import com.example.medic.Presentation.Repository.Room.DTO.PostDTO;
 import com.example.medic.Presentation.Repository.Room.DTO.UserDTO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,9 +35,13 @@ public class PostRepository implements RepositoryTasks {
     private MedicServerAPI api;
 
     public PostRepository(Application application){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(HOST)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         api = retrofit.create(MedicServerAPI.class);
@@ -46,17 +53,55 @@ public class PostRepository implements RepositoryTasks {
     }
 
     @Override
-    public MutableLiveData<List<Post>> getAllPosts() {
-        MutableLiveData<List<Post>> allPosts = new MutableLiveData<>();
+    public LiveData<String> auth(User user){
+        MutableLiveData<String> body = new MutableLiveData<>();
 
-        api.getAllPosts().enqueue(new Callback<List<Post>>() {
+        api.auth(user).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
+                ServiceLocator.getInstance().setToken(response.body());
+                body.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+        return body;
+    }
+
+    @Override
+    public LiveData<String> register(User user){
+        MutableLiveData<String> body = new MutableLiveData<>();
+
+        api.auth(user).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                ServiceLocator.getInstance().setToken(response.body());
+                body.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+        return body;
+    }
+
+    @Override
+    public LiveData<List<PostDTO>> getAllPosts() {
+        MutableLiveData<List<PostDTO>> allPosts = new MutableLiveData<>();
+
+        api.getAllPosts().enqueue(new Callback<List<PostDTO>>() {
+            @Override
+            public void onResponse(Call<List<PostDTO>> call, Response<List<PostDTO>> response) {
                 allPosts.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(Call<List<PostDTO>> call, Throwable t) {
                 t.printStackTrace();
                 //allPosts.setValue(posts);
             }
@@ -77,7 +122,8 @@ public class PostRepository implements RepositoryTasks {
     @Override
     public void deletePost(Post post) {
 
-        api.deletePostById(UUID.fromString(post.getId())).enqueue(new Callback<Void>() {
+        api.deletePostById(ServiceLocator.getInstance().getToken(), UUID.fromString(post.getId()))
+                .enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful() && response.body() !=null) {
@@ -133,7 +179,7 @@ public class PostRepository implements RepositoryTasks {
     public LiveData<UserDTO> findUser(String email, LifecycleOwner owner) {
         MutableLiveData<UserDTO> answer = new MutableLiveData<>();
 
-        api.getInfoByEmail(email).enqueue(new Callback<User>() {
+        api.getInfoByEmail(ServiceLocator.getInstance().getToken(), email).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 answer.setValue((UserDTO) response.body());
@@ -158,7 +204,7 @@ public class PostRepository implements RepositoryTasks {
     public LiveData<UserDTO> findUser(String email, String password, LifecycleOwner owner) {
         MutableLiveData<UserDTO> answer = new MutableLiveData<>();
 
-        api.getInfoByEmail(email).enqueue(new Callback<User>() {
+        api.getInfoByEmail(ServiceLocator.getInstance().getToken(), email).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 answer.setValue((UserDTO) response.body());

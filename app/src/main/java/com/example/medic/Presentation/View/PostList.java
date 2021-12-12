@@ -82,7 +82,7 @@ public class PostList extends Fragment {
         switch (item.getItemId()) {
             case R.id.miProfile: {
                 if (ServiceLocator.getInstance().getUser().getRole() == User.Role.Guest){
-                    auth();
+                    authWithLoginAndPassword();
                 } else {
                     signOut();
                 }
@@ -109,6 +109,10 @@ public class PostList extends Fragment {
     public void auth(){
         Intent signInIntent = ServiceLocator.getInstance().getGoogleLogic().auth.getIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    public void authWithLoginAndPassword(){
+        Navigation.findNavController(postListView).navigate(R.id.action_postList_to_authFragment);
     }
 
     public void signOut(){

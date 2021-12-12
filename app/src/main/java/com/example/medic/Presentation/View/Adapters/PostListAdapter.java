@@ -1,7 +1,7 @@
 package com.example.medic.Presentation.View.Adapters;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +39,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.binding.postCard.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +62,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
         holder.binding.tags.setText(localDataSet.get(position).getTags());
 
-        holder.binding.nameOfAuthor.setText(localDataSet.get(position).getUser().getFirstName());
+        if (localDataSet.get(position).getUser() != null){
+            holder.binding.nameOfAuthor.setText(localDataSet.get(position).getUser().getFirstName());
+        } else {
+            holder.binding.nameOfAuthor.setText("Anon");
+        }
 
         if (localDataSet.get(position).getImages() != null && !localDataSet.get(position).getImages().isEmpty()){
             holder.binding.imageSlider

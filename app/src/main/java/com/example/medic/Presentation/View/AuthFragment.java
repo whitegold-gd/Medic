@@ -1,14 +1,24 @@
 package com.example.medic.Presentation.View;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.medic.DI.ServiceLocator;
+import com.example.medic.Domain.Model.User;
+import com.example.medic.MainActivity;
 import com.example.medic.Presentation.ViewModel.AuthViewModel;
+import com.example.medic.R;
 import com.example.medic.databinding.AuthFragmentBinding;
+import com.google.android.gms.common.SignInButton;
 
 public class AuthFragment extends Fragment {
     AuthFragmentBinding binding;
@@ -25,21 +35,31 @@ public class AuthFragment extends Fragment {
         ServiceLocator.getInstance().getGoogleLogic().auth.init(getActivity());
     }
 
-    /*@Override
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = AuthFragmentBinding.inflate(getLayoutInflater(), container, false);
 
-        if (ServiceLocator.getInstance().getUser().getRole() == User.Role.Guest){
-            binding.signInButton.setVisibility(View.VISIBLE);
-            binding.signOutButton.setVisibility(View.GONE);
-            binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
-            binding.signInButton.setOnClickListener((view) -> auth());
-        } else {
-            binding.signInButton.setVisibility(View.GONE);
-            binding.signOutButton.setVisibility(View.VISIBLE);
-            binding.signOutButton.setOnClickListener((view) -> signOut());
-        }
+        binding.signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        if (ServiceLocator.getInstance().getUser().getRole() != User.Role.Guest)
+            binding.signInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    auth(binding.editTextTextEmailAddress.getText().toString(),
+                            binding.editTextTextPassword.getText().toString());
+                    Navigation.findNavController(v).navigate(R.id.action_postList_to_authFragment);
+                }
+            });
+        else
+            binding.signInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    register(binding.editTextTextEmailAddress.getText().toString(),
+                            binding.editTextTextPassword.getText().toString());
+                    Navigation.findNavController(v).navigate(R.id.action_postList_to_authFragment);
+                }
+            });
 
         setHasOptionsMenu(true);
 
@@ -56,15 +76,21 @@ public class AuthFragment extends Fragment {
         Navigation.findNavController(((MainActivity) getActivity()).mBinding.navHostFragment).popBackStack();
     }
 
-    public void auth(){
-        Intent signInIntent = ServiceLocator.getInstance().getGoogleLogic().auth.getIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+    public void auth(String email, String password){
+        if (email.length() != 0 && password.length() != 0){
+            mViewModel.auth(email, password);
+        }
+        ServiceLocator.getInstance().getRepository().findUser(email, getActivity())
+                .observe(getActivity(), (user) -> {
+                    ServiceLocator.getInstance().setUser(user);
+                });
     }
 
-    public void signOut(){
-        ServiceLocator.getInstance().getGoogleLogic().auth.signOut((MainActivity)getActivity());
-        Navigation.findNavController(((MainActivity) getActivity()).mBinding.navHostFragment).popBackStack();
-    }*/
+    public void register(String email, String password){
+        if (email.length() != 0 && password.length() != 0){
+            mViewModel.register(email, password);
+        }
+    }
 }
 
 

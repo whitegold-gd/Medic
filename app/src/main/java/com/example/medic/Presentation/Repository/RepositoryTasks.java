@@ -10,6 +10,9 @@ import com.example.medic.Domain.Model.User;
 import java.util.List;
 
 public interface RepositoryTasks {
+    LiveData<String> auth(User user);
+    LiveData<String> register(User user);
+
     <T extends Post> LiveData<List<T>> getAllPosts();
     void addPost(Post post);
     void deletePost(Post post);

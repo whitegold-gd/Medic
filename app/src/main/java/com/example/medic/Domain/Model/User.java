@@ -24,10 +24,10 @@ public class User {
         id = UUID.randomUUID().toString();
     }
 
-    public User(String name, String lastName) {
+    public User(String email, String password) {
         this();
-        this.firstName = name;
-        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     @NotNull

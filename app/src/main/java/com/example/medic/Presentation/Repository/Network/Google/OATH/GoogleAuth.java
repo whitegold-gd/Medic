@@ -48,14 +48,10 @@ public class GoogleAuth {
                         newUser.setFirstName(personName);
                     }
                     newUser.setRole(User.Role.User);
-                    Log.w("ABCHIHBA", personEmail);
-
                     ServiceLocator.getInstance().getRepository().addUser(newUser);
-
                     ServiceLocator.getInstance().setUser(newUser);
                 } else {
                     ServiceLocator.getInstance().setUser(user);
-                    Log.w("ABCHIHBA", "already exist");
                 }
             });
         }
@@ -76,7 +72,6 @@ public class GoogleAuth {
     private boolean handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.w("TAG", "signInResult:true");
             return true;
         } catch (ApiException e) {
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
